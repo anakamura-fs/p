@@ -99,13 +99,18 @@ JSONなので、うまくいくならば「配列にObject」みたいなのを�
 JSON化に抜け道がありました。
 
 目的のObjectのクラスに「implements JsonSerializable」しておき、「jsonSerialize」メソッドを実装します。
-そのメソッドの中で、そのObjectに都合のよいJSONを作って返させます。
-(その実装の中ででもjson_encodeを使うのが手っ取り早いです。)
+~~ そのメソッドの中で、そのObjectに都合のよいJSONを作って返させます。 ~~
+~~ (その実装の中ででもjson_encodeを使うのが手っ取り早いです。) ~~
+(2020/08/09 訂正)
+「JSONを作る」じゃなく「JSONの元になるデータを作る」です。
+int/string/(連想)配列等を組み合わせたデータを返すと良いと思います。
+すると`json_encode(そのobject)`を呼ばれたとき`jsonSerialize`の結果を使ってJSONが作られます。
 
 それでやると、今度こそ、
 
 * echo(json_encode(配列))→OK
 * echo(json_encode(Object))→OK
+* echo(json_encode(配列(Object)))→OK
 
 となり、これで目的を果たせます。
 
